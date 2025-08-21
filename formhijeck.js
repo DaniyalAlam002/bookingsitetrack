@@ -234,7 +234,6 @@
     function hookForms() {
         document.querySelectorAll("form").forEach((form) => {
             form.addEventListener("submit", function (e) {
-                e.preventDefault(); // prevent page reload
                 try {
                     const data = collectFields(form);
                     data._page = window.location.href;
