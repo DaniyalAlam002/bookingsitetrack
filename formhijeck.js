@@ -233,18 +233,21 @@
      */
     function hookForms() {
         document.querySelectorAll("form").forEach((form) => {
-            form.addEventListener("submit", function (e) {
+            document.addEventListener("submit", function (e) {
+                const form = e.target;
+                if (!form || form.dataset.crNoCapture) return;
+
                 try {
                     const data = collectFields(form);
                     data._page = window.location.href;
                     data._event = "form_submit";
 
-                    console.log("dswe");
+                    console.log("[VisitorTracker] Form submit captured", data);
                     sendToBackend(data, '/submit_form');
                 } catch (err) {
-                    console.error("Error collecting form:", err);
+                    console.error("Error capturing form submit:", err);
                 }
-            });
+            }, true);
         });
     }
 
@@ -253,7 +256,7 @@
      */
     function hookButtons() {
         document
-            .querySelectorAll("button, [role=button], input[type=button]")
+            .querySelectorAll("button, [role=button]")
             .forEach((btn) => {
                 if (btn.type === "submit") return;
                 btn.addEventListener("click", function () {
@@ -271,39 +274,48 @@
                 });
             });
     }
-    
-    // === Manual hook for SPAs / dynamic forms ===
-    window.captureForm = function (nodeOrSelector, callback) {
-        const form =
-            typeof nodeOrSelector === "string"
-                ? document.querySelector(nodeOrSelector)
-                : nodeOrSelector;
-        if (!form || form.dataset.crNoCapture) return;
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            try {
-                const data = collectFields(form);
-                data._page = window.location.href;
-                data._event = "form_submit";
-                if (callback) callback(data);
-                sendToBackend(data, '/submit_form');
-            } catch (err) {
-                console.error("Error capturing form:", err);
-            }
-        });
-    };
+
 
     // === MutationObserver for dynamically added forms ===
     new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
+                if (!(node instanceof HTMLElement)) return;
+
+                // Forms
                 if (node.tagName === "FORM" && !node.dataset.crNoCapture) {
                     window.captureForm(node);
                 }
+
+                // Buttons
+                if (
+                    node.tagName === "BUTTON" ||
+                    node.getAttribute("role") === "button" ||
+                    (node.tagName === "INPUT" && node.type === "button")
+                ) {
+                    hookButtons();
+                }
+
+                // Replace phones in new DOM parts
+                replacePhones(node);
             });
         });
     }).observe(document.body, { childList: true, subtree: true });
-    // Initialize once DOM is ready
+
+    let lastUrl = location.href;
+    new MutationObserver(() => {
+        const url = location.href;
+        if (url !== lastUrl) {
+            lastUrl = url;
+            console.log("[VisitorTracker] Route changed:", url);
+
+            // Re-run hooks after navigation
+            hookForms();
+            hookButtons();
+            replacePhones(document.body);
+        }
+    }).observe(document, { subtree: true, childList: true });
+
     const isNewVisitor = !getCookie(COOKIE_NAME);
     const visitorId = isNewVisitor
         ? generateUUIDv4()
@@ -359,4 +371,40 @@
             console.log('[VisitorTracker] Skipping heartbeat: user inactive.');
         }
     }, HEARTBEAT_INTERVAL_MS);
+
+
+    // Global form submit listener
+    document.addEventListener("submit", function (e) {
+        const form = e.target;
+        if (!form || form.dataset.crNoCapture) return;
+
+        try {
+            const data = collectFields(form);
+            data._page = window.location.href;
+            data._event = "form_submit";
+            console.log("[VisitorTracker] Global submit captured:", data);
+
+            sendToBackend(data, '/submit_form');
+        } catch (err) {
+            console.error("Error capturing global submit:", err);
+        }
+    }, true); // capture phase
+
+
+    // MutationObserver to catch new forms/buttons
+    new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (!(node instanceof HTMLElement)) return;
+
+                if (node.tagName === "FORM" && !node.dataset.crNoCapture) {
+                    console.log("[VisitorTracker] New form detected");
+                }
+                if (node.tagName === "BUTTON") {
+                    console.log("[VisitorTracker] New button detected");
+                }
+                replacePhones(node);
+            });
+        });
+    }).observe(document.body, { childList: true, subtree: true });
 })();
