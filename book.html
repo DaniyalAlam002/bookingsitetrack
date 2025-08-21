@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Service - BookEase</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>BookEase</h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="book.html" class="active">Book Now</a></li>
+                </ul>
+            </nav>
+            <div class="header-phone">
+                <span class="phone-icon">📞</span>
+                <a href="tel:+1-555-123-4567">+1 (555) 123-4567</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Booking Hero -->
+    <section class="booking-hero">
+        <div class="container">
+            <h1>Book Your Service</h1>
+            <p>Fill out the form below to secure your booking. Need help? Call us at <a href="tel:+1-555-123-4567">+1 (555) 123-4567</a></p>
+        </div>
+    </section>
+
+    <!-- Booking Form -->
+    <section class="booking-form-section">
+        <div class="container">
+            <form class="booking-form">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Create Password *</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+
+                <!-- Service Details -->
+                <div class="form-section">
+                    <h2>Service Details</h2>
+                    <div class="form-group">
+                        <label for="serviceType">Service Type *</label>
+                        <select id="serviceType" name="serviceType" required>
+                            <option value="">Select a service</option>
+                            <option value="consultation">Consultation</option>
+                            <option value="training">Training Session</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="installation">Installation</option>
+                            <option value="repair">Repair</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookingDate">Preferred Date *</label>
+                            <input type="date" id="bookingDate" name="bookingDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookingTime">Preferred Time *</label>
+                            <input type="time" id="bookingTime" name="bookingTime" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Duration (hours) *</label>
+                        <input type="number" id="duration" name="duration" min="1" max="24" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="participants">Number of Participants</label>
+                        <input type="number" id="participants" name="participants" min="1" max="100">
+                    </div>
+                </div>
+
+                <!-- Additional Options -->
+                <div class="form-section">
+                    <h2>Additional Options</h2>
+                    <div class="form-group">
+                        <label>Service Level *</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="serviceLevel" value="basic" required>
+                                <span class="radio-custom"></span>
+                                Basic ($50)
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="serviceLevel" value="standard" required>
+                                <span class="radio-custom"></span>
+                                Standard ($100)
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="serviceLevel" value="premium" required>
+                                <span class="radio-custom"></span>
+                                Premium ($150)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Additional Services</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="addons" value="priority">
+                                <span class="checkbox-custom"></span>
+                                Priority Booking (+$25)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="addons" value="insurance">
+                                <span class="checkbox-custom"></span>
+                                Service Insurance (+$15)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="addons" value="support">
+                                <span class="checkbox-custom"></span>
+                                24/7 Support (+$20)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Upload -->
+                <div class="form-section">
+                    <h2>Supporting Documents</h2>
+                    <div class="form-group">
+                        <label for="documents">Upload Documents (Optional)</label>
+                        <input type="file" id="documents" name="documents" multiple accept=".pdf,.doc,.docx,.jpg,.png">
+                        <small>Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB total)</small>
+                    </div>
+                </div>
+
+                <!-- Special Requirements -->
+                <div class="form-section">
+                    <h2>Special Requirements</h2>
+                    <div class="form-group">
+                        <label for="requirements">Special Requirements or Notes</label>
+                        <textarea id="requirements" name="requirements" rows="4" placeholder="Please describe any special requirements, accessibility needs, or additional information..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Terms and Submit -->
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="terms" required>
+                            <span class="checkbox-custom"></span>
+                            I agree to the <a href="#" target="_blank">Terms and Conditions</a> and <a href="#" target="_blank">Privacy Policy</a> *
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="marketing">
+                            <span class="checkbox-custom"></span>
+                            I would like to receive marketing communications about special offers and updates
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">Complete Booking</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BookEase</h3>
+                    <p>Making booking simple and convenient for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="book.html">Book Now</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Phone: <a href="tel:+1-555-123-4567">+1 (555) 123-4567</a></p>
+                    <p>Email: info@bookease.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BookEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="formhijeck.js"></script>
+
+</body>
+</html>
